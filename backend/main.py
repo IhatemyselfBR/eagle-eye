@@ -67,5 +67,36 @@ async def search(file: UploadFile = File(...), limit: int = 12):
     found.sort(key=lambda x: x["similarity"], reverse=True)
     return {"query": "average-hash-visual-similarity", "indexed_images": len(found), "results": found[:limit], "notice": "Similaridade visual aproximada; não confirma identidade de pessoas."}
 
+
+
+@app.post("/api/index")
+async def add_images(files: list[UploadFile] = File(...)):
+    INDEX_DIR.mkdir(parents=True, exist_ok=True)
+    saved = 0
+    errors = []
+    for upload in files:
+        suffix = Path(upload.filename or "").suffix.lower()
+        if suffix not in ALLOWED:
+            errors.append(f"{upload.filename}: formato não permitido")
+            continue
+        raw = await upload.read(MAX_BYTES + 1)
+        if len(raw) > MAX_BYTES:
+            errors.append(f"{upload.filename}: máximo de 10 MB")
+            continue
+        try:
+            load_image(raw)
+        except Exception:
+            errors.append(f"{upload.filename}: imagem inválida")
+            continue
+        (INDEX_DIR / f"{uuid.uuid4().hex}{suffix}").write_bytes(raw)
+        saved += 1
+
+    total = sum(
+        1 for p in INDEX_DIR.rglob("*")
+        if p.is_file() and p.suffix.lower() in ALLOWED
+    )
+    return {"ok": True, "saved": saved,
+            "indexed_images": total, "errors": errors}
+
 app.mount("/image-index", StaticFiles(directory=str(INDEX_DIR)), name="image-index")
 app.mount("/", StaticFiles(directory=str(BASE_DIR), html=True), name="frontend")
