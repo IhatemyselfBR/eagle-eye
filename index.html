@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eagle Eye — Busca visual</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg"></div>
+<header><div class="brand"><span class="logo">◉</span><div><b>EAGLE EYE</b><small>visual search</small></div></div><a href="#sobre">Como funciona</a></header>
+<main>
+<section class="hero"><div class="eyebrow">BUSCA VISUAL</div><h1>Encontre imagens<br><span>semelhanças.</span></h1><p>Envie uma imagem e analise visualmente o conteúdo. Compare sua imagem com um índice local de imagens usando uma métrica de semelhança visual.</p></section>
+<section class="card">
+<input id="file" type="file" accept="image/*" hidden>
+<label for="file" id="drop" class="drop"><div class="upload-icon">↑</div><h2>Solte sua imagem aqui</h2><p>ou <u>escolha um arquivo</u></p><small>JPG, PNG ou WEBP · até 10 MB</small></label>
+<div id="preview" class="preview hidden"><img id="previewImg"><div><b id="fileName"></b><button id="remove" class="ghost">Remover</button></div></div>
+<button id="search" class="search" disabled><span>Pesquisar imagem</span><b>→</b></button>
+<div id="status" class="status hidden"></div>
+</section>
+<section id="results" class="results hidden"><div class="section-title"><div><small>ANÁLISE</small><h2>Resultados</h2></div><span id="score">DEMO</span></div><div class="notice">A busca compara apenas imagens presentes no índice local. A porcentagem indica semelhança visual aproximada, não identidade de uma pessoa.</div><div class="result-grid" id="resultGrid"></div></section>
+<section id="sobre" class="about"><div><small>PRIVACIDADE</small><h2>Feito para ser simples.</h2></div><p>A imagem escolhida é enviada à API configurada para comparação com o índice de imagens. Evite enviar fotos sensíveis.</p></section>
+</main>
+<footer>EAGLE EYE <span>•</span> GitHub Pages ready</footer>
+<script src="api-config.js"></script>
+<script src="script.js"></script>
+</body></html>
